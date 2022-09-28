@@ -286,10 +286,17 @@ def bigbio_dataset_to_annotated_flair_sentences(
                                 )
                             # add named entity normalization labels
                             else:
+                                ids = gold_annotation["db_id"].split("|")
+                                main_id = ids[0]
+                                if len(ids) > 1:
+                                    other_ids = ids[1:]
+                                else:
+                                    other_ids = None
                                 label = EntityLinkingLabel(
                                     span=Span(tokens),
-                                    id=gold_annotation["db_id"],
+                                    id=main_id,
                                     concept_name=entity["text"],
+                                    additional_ids=other_ids,
                                     ontology=gold_annotation["db_name"],
                                 )
                                 sentence["text"].add_complex_label(
